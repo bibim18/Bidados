@@ -1,5 +1,5 @@
 import 'dotenv/config' // Only on top
-import line from './lineConfig'
+import line from './config'
 
 const config = {
     line

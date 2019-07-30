@@ -1,41 +1,25 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import axios from 'axios'
-import config from './configs'
+import Koa from 'koa'
+import Route from 'koa-router'
+import bodyParser from 'koa-bodyparser'
+import compress from 'koa-compress'
+import cors from '@koa/cors'
+import reply from './utils/reply.flow'
 
-const app = express()
-const port = process.env.PORT || 4000
+const app = new Koa()
+const router = new Route()
+const port = process.env.PORT
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.post('/webhook', async (req, res) => {
-  console.dir(req.body, { depth: null })
-  let reply_token = req.body.events[0].replyToken
-  const resp = await reply(reply_token)
-  res.sendStatus(200)
+router.post('/webhook', async (ctx, next) => {
+    let reply_token = ctx.request.body.events[0].replyToken
+    const resp = await reply(reply_token)
+  ctx.body = resp
 })
-const reply = async reply_token => {
-  let headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer {${config.line.line_access}}`
-  }
-  let body = {
-    replyToken: reply_token,
-    messages: [
-      {
-        type: 'text',
-        text: 'Hello'
-      },
-      {
-        type: 'text',
-        text: 'How are you?'
-      }
-    ]
-  }
-  const resp = await axios.post('https://api.line.me/v2/bot/message/reply', body, { headers })
 
-  console.log('resp of line api ', resp)
-}
+app.use(bodyParser())
+app.use(compress())
+app.use(cors())
+app.use(router.routes())
+app.use(router.allowedMethods())
 
 app.listen(port, () => {
   console.log(`Run in port ${port}`)
