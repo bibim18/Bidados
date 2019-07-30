@@ -18,6 +18,7 @@ const reply = reply_token => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer {${config.line.line_access}}`
     }
+    console.log('reply_token --> ', reply_token)
     let body = JSON.stringify({
         replyToken: reply_token,
         messages: [{
