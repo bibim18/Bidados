@@ -4,10 +4,11 @@ import bodyParser from 'koa-bodyparser'
 import compress from 'koa-compress'
 import cors from '@koa/cors'
 import reply from './utils/reply.flow'
+import config from './configs'
 
 const app = new Koa()
 const router = new Route()
-const port = process.env.PORT || 4000
+const port = config.line.port
 
 router.post('/webhook', async (ctx, next) => {
     let reply_token = ctx.request.body.events[0].replyToken
