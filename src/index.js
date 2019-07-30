@@ -16,7 +16,7 @@ app.post('/webhook', (req, res) => {
 const reply = reply_token => {
     let headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${config.line.line_access}`
+        'Authorization': `Bearer {${config.line.line_access}}`
     }
     let body = JSON.stringify({
         replyToken: reply_token,
