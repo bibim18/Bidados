@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import request from 'request'
+import axios from 'axios'
 import config from './configs'
 
 const app = express()
@@ -8,9 +8,10 @@ const port = process.env.PORT || 4000
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.post('/webhook', (req, res) => {
+app.post('/webhook', async (req, res) => {
+    console.log(req.body)
     let reply_token = req.body.events[0].replyToken
-    reply(reply_token)
+    const resp = await reply(reply_token)
     res.sendStatus(200)
 })
 const reply = async reply_token => {
@@ -18,8 +19,7 @@ const reply = async reply_token => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer {${config.line.line_access}}`
     }
-    console.log('reply_token --> ', reply_token)
-    let body = JSON.stringify({
+    let body = {
         replyToken: reply_token,
         messages: [{
             type: 'text',
@@ -29,12 +29,11 @@ const reply = async reply_token => {
             type: 'text',
             text: 'How are you?'
         }]
-    })
-    const resp = await request.post({
-        url: 'https://api.line.me/v2/bot/message/reply',
-        headers: headers,
-        body: body
-    })
+    }
+    const resp = await axios.post('https://api.line.me/v2/bot/message/reply',
+    body,
+    { headers }
+    )
 
     console.log('resp of line api ', resp)
 }
