@@ -7,7 +7,7 @@ import reply from './utils/reply.flow'
 
 const app = new Koa()
 const router = new Route()
-const port = process.env.PORT
+const port = process.env.PORT || 4000
 
 router.post('/webhook', async (ctx, next) => {
     let reply_token = ctx.request.body.events[0].replyToken
