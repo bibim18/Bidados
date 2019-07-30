@@ -13,7 +13,7 @@ app.post('/webhook', (req, res) => {
     reply(reply_token)
     res.sendStatus(200)
 })
-const reply = reply_token => {
+const reply = async reply_token => {
     let headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer {${config.line.line_access}}`
@@ -30,13 +30,13 @@ const reply = reply_token => {
             text: 'How are you?'
         }]
     })
-    request.post({
+    const resp = await request.post({
         url: 'https://api.line.me/v2/bot/message/reply',
         headers: headers,
         body: body
-    }, (err, res, body) => {
-        console.log('status = ' + res.statusCode);
-    });
+    })
+
+    console.log('resp of line api ', resp)
 }
 
 app.listen(port, () => {
