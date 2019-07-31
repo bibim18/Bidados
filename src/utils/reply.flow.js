@@ -8,17 +8,17 @@ const client = new Client({
 const list = []
 
 const reply = async (reply_token, message) => {
-  if (message.text.includes('add ')) {
-    const text = message.text.split(' ')
-    list.push(`${list.length+1}. ${text[1]}`)
+  if (message.text.includes('add ') || message.text.includes('แอด ')) {
+    const text =  message.text.replace('add','').trim()
+    list.push(`${list.length+1}. ${text}`)
+    const messages = [
+      {
+        type: 'text',
+        text: `list\n${list.join('\n')}`
+      },
+    ]
+    await client.replyMessage(reply_token, messages)
   }
-  const messages = [
-    {
-      type: 'text',
-      text: `list\n${list.join('\n')}`
-    },
-  ]
-  const resp = await client.replyMessage(reply_token, messages)
 }
 
 export default reply
