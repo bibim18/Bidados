@@ -12,7 +12,8 @@ const port = config.line.port
 
 router.post('/webhook', async (ctx, next) => {
     let reply_token = ctx.request.body.events[0].replyToken
-    const resp = await reply(reply_token)
+    const message = ctx.request.body.events[0].message
+    const resp = await reply(reply_token, message)
   ctx.body = resp
 })
 
