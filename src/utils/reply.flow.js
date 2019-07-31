@@ -10,12 +10,12 @@ const list = []
 const reply = async (reply_token, message) => {
   if (message.text.includes('add ')) {
     const text = message.text.split(' ')
-    list.push(`${list.length+1}. ${text[1]}\n`)
+    list.push(`${list.length+1}. ${text[1]}`)
   }
   const messages = [
     {
       type: 'text',
-      text: `list\n${list}`
+      text: `list\n${list.join('\n')}`
     },
   ]
   const resp = await client.replyMessage(reply_token, messages)
