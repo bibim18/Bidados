@@ -3,12 +3,26 @@ import Route from 'koa-router'
 import bodyParser from 'koa-bodyparser'
 import compress from 'koa-compress'
 import cors from '@koa/cors'
+
 import reply from './utils/reply.flow'
 import config from './configs'
+
+
+
+import todos from './model/todos'
+
+import serviceAccount from '../bidados.credential.json'
 
 const app = new Koa()
 const router = new Route()
 const port = config.line.port
+
+
+
+router.get('/test', async (ctx,next)=> {
+  const results = await todos.getAll()
+  ctx.body = results
+})
 
 router.post('/webhook', async (ctx, next) => {
     let reply_token = ctx.request.body.events[0].replyToken
