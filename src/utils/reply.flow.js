@@ -6,28 +6,42 @@ const client = new Client({
   channelAccessToken: `${config.line.line_access}`
 })
 
-const list = []
+const replaceWord = /add|Add|แอด|เพิ่ม/
+let todoList
 
 const reply = async (reply_token, message) => {
-  if (message.text.includes('list')) {
-    const todoList = await todos.getAll()
+  let text
+  let story
+  // keep text into list
+  if (message.text.match(/add|แอด|เพิ่ม/i)) {
+    text = message.text.replace(replaceWord, '').trim()
+    let data = {
+      title: text
+    }
+    const regex = /to\s+/
+    if (text.match(regex)) {
+      // get new title and story
+      story = text.slice(text.match(regex).index + 2).trim()
+      text = text.slice(0, text.match(regex).index - 1).trim()
+
+      data = {
+        title: text,
+        story
+      }
+    }
+    await todos.create(data)
+  } else {
+    // show list
+    if (message.text === 'memorize' || message.text === 'memory')
+      todoList = await todos.getAll('memorize')
+    if (message.text === 'list') todoList = await todos.getAll()
+
     return client.replyMessage(reply_token, [
       {
         type: 'text',
-        text: `list\n${todoList.map(todo=> todo.title).join('\n')}`
+        text: `list\n${todoList.map(todo => todo.title).join('\n')}`
       }
     ])
-  }
-  if (message.text.includes('add ') || message.text.includes('แอด ')) {
-    const text =  message.text.replace('add','').trim()
-    list.push(`${list.length+1}. ${text}`)
-    const messages = [
-      {
-        type: 'text',
-        text: `list\n${list.join('\n')}`
-      },
-    ]
-    await client.replyMessage(reply_token, messages)
   }
 }
 
