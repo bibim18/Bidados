@@ -6,7 +6,7 @@ const client = new Client({
   channelAccessToken: `${config.line.line_access}`
 })
 
-const replaceWord = /add|Add|แอด|เพิ่ม/
+const replaceWord = /add|แอด|เพิ่ม/i
 let todoList
 
 const reply = async (reply_token, message) => {
