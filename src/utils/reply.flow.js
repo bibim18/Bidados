@@ -38,9 +38,9 @@ const reply = async (reply_token, message) => {
     ])
   } else {
     // show list
-    if (message.text === 'memorize' || message.text === 'memory')
-      todoList = await todos.getAll('memorize')
-    if (message.text === 'list') todoList = await todos.getAll()
+    if (/memory/i.test(message.text)) todoList = await todos.getAll('memory')
+    if (/travel/i.test(message.text)) todoList = await todos.getAll('travel')
+    if (/list/i.test(message.text)) todoList = await todos.getAll()
 
     return client.replyMessage(reply_token, [
       {
