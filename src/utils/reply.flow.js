@@ -30,6 +30,12 @@ const reply = async (reply_token, message) => {
       }
     }
     await todos.create(data)
+    return client.replyMessage(reply_token, [
+      {
+        type: 'text',
+        text: `Add ${text} in story ${story}`
+      }
+    ])
   } else {
     // show list
     if (message.text === 'memorize' || message.text === 'memory')
