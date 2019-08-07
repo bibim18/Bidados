@@ -21,7 +21,7 @@ const reply = async (reply_token, message) => {
     const regex = /to|ใน\s+/
     if (text.match(regex)) {
       // get new title and story
-      story = text.slice(text.match(regex).index + 2).trim()
+      story = text.slice(text.match(regex).index + 2).trim().toLowerCase()
       text = text.slice(0, text.match(regex).index - 1).trim()
 
       data = {
