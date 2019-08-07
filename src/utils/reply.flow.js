@@ -1,6 +1,7 @@
 import { Client } from '@line/bot-sdk'
 import config from '../configs'
 import todos from '../model/todos'
+import R from 'ramda'
 
 const client = new Client({
   channelAccessToken: `${config.line.line_access}`
@@ -18,7 +19,7 @@ const reply = async (reply_token, message) => {
     let data = {
       title: text
     }
-    const regex = /to|ใน\s+/
+    const regex = /to|ใน\s+/i
     if (text.match(regex)) {
       // get new title and story
       story = text.slice(text.match(regex).index + 2).trim().toLowerCase()
@@ -46,7 +47,7 @@ const reply = async (reply_token, message) => {
     return client.replyMessage(reply_token, [
       {
         type: 'text',
-        text: todoList? `list\n${todoList.map(todo => todo.title).join('\n')}` : ''
+        text: R.isEmpty(todoList)? `Not found list`  :`list\n${todoList.map(todo => todo.title).join('\n')}`
       }
     ])
   }
