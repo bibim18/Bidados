@@ -7,18 +7,18 @@ const client = new Client({
 })
 
 const replaceWord = /add|แอด|เพิ่ม/i
-let todoList
 
 const reply = async (reply_token, message) => {
   let text
   let story
+  let todoList
   // keep text into list
   if (message.text.match(/add|แอด|เพิ่ม/i)) {
     text = message.text.replace(replaceWord, '').trim()
     let data = {
       title: text
     }
-    const regex = /to\s+/
+    const regex = /to|ใน\s+/
     if (text.match(regex)) {
       // get new title and story
       story = text.slice(text.match(regex).index + 2).trim()
@@ -42,10 +42,11 @@ const reply = async (reply_token, message) => {
     if (/travel/i.test(message.text)) todoList = await todos.getAll('travel')
     if (/list/i.test(message.text)) todoList = await todos.getAll()
 
+    if(todoList)
     return client.replyMessage(reply_token, [
       {
         type: 'text',
-        text: `list\n${todoList.map(todo => todo.title).join('\n')}`
+        text: todoList? `list\n${todoList.map(todo => todo.title).join('\n')}` : ''
       }
     ])
   }
