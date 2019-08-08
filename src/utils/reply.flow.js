@@ -1,6 +1,7 @@
 import { Client } from '@line/bot-sdk'
 import config from '../configs'
 import todos from '../model/todos'
+import {genarateFlex} from './genarateFlex.flow'
 import R from 'ramda'
 
 const client = new Client({
@@ -43,13 +44,23 @@ const reply = async (reply_token, message) => {
     if (/travel/i.test(message.text)) todoList = await todos.getAll('travel')
     if (/list/i.test(message.text)) todoList = await todos.getAll()
 
-    if(todoList)
-    return client.replyMessage(reply_token, [
-      {
-        type: 'text',
-        text: R.isEmpty(todoList)? `Not found list`  :`list\n${todoList.map(todo => todo.title).join('\n')}`
+    if(todoList) {
+      let messages = [
+        {
+          type: 'text',
+          text: `Not found list`
+        }
+      ]
+
+      if(/menu/i.test(message.text)){
+        todoList = await todos.getAll()
+        messages = await genarateFlex(todoList)
       }
-    ])
+      
+      return client.replyMessage(reply_token, messages)
+    }
+
+
   }
 }
 
