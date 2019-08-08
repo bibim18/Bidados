@@ -1,7 +1,8 @@
 import { Client } from '@line/bot-sdk'
 import config from '../configs'
 import todos from '../model/todos'
-import {genarateFlex} from './genarateFlex.flow'
+import { genarateMenu } from './genarateMenu.flow'
+import { flexMsg } from './generateFlex.flow'
 import R from 'ramda'
 
 const client = new Client({
@@ -23,7 +24,10 @@ const reply = async (reply_token, message) => {
     const regex = /to|ใน\s+/i
     if (text.match(regex)) {
       // get new title and story
-      story = text.slice(text.match(regex).index + 2).trim().toLowerCase()
+      story = text
+        .slice(text.match(regex).index + 2)
+        .trim()
+        .toLowerCase()
       text = text.slice(0, text.match(regex).index - 1).trim()
 
       data = {
@@ -45,23 +49,24 @@ const reply = async (reply_token, message) => {
     if (/list/i.test(message.text)) todoList = await todos.getAll()
 
     let messages
-    if(todoList) {
-      messages = [
-        {
-          type: 'text',
-          text: R.isEmpty(todoList)? `Not found list`  :`list\n${todoList.map(todo => todo.title).join('\n')}`
-        }
-      ]
+    if (todoList) {
+      messages = flexMsg(message.text, todoList)
+      if (R.isEmpty(todoList)) {
+        messages = [
+          {
+            type: 'text',
+            text: `Not found list`
+          }
+        ]
+      }
     }
 
-    if(/menu/i.test(message.text)){
+    if (/menu/i.test(message.text)) {
       const list = await todos.getAll()
-      messages = await genarateFlex(list)
+      messages = await genarateMenu(list)
     }
 
-    if(messages) return client.replyMessage(reply_token, messages)
-
-
+    if (messages) return client.replyMessage(reply_token, messages)
   }
 }
 

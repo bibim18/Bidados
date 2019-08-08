@@ -1,4 +1,4 @@
-export const genarateFlex = async stories => {
+export const genarateMenu = async stories => {
   const action = stories
     .filter(item => item.story)
     .map(item => {
@@ -16,7 +16,7 @@ export const genarateFlex = async stories => {
     })
   const flexMsg = {
     type: 'template',
-    altText: 'this is a buttons template',
+    altText: 'select story list',
     template: {
       type: 'buttons',
       actions: [...new Set(action.map(i => JSON.stringify(i)))].map(s => JSON.parse(s)),
