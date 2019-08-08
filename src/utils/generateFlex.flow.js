@@ -1,9 +1,9 @@
 export const flexMsg = (story, list) => {
-  const contents = list.map(item => {
+  const contents = list.map((item, index) => {
     return {
       type: 'text',
-      text: item.title,
-      align: 'center'
+      text: `${index+1}. ${item.title}`,
+      align: 'start'
     }
   })
   const msg = {
