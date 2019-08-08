@@ -44,21 +44,22 @@ const reply = async (reply_token, message) => {
     if (/travel/i.test(message.text)) todoList = await todos.getAll('travel')
     if (/list/i.test(message.text)) todoList = await todos.getAll()
 
-    if(todoList) {
-      let messages = [
+    let message
+    if(R.isEmpty(todoList)) {
+      messages = [
         {
           type: 'text',
           text: `Not found list`
         }
       ]
-
-      if(/menu/i.test(message.text)){
-        todoList = await todos.getAll()
-        messages = await genarateFlex(todoList)
-      }
-      
-      return client.replyMessage(reply_token, messages)
     }
+
+    if(/menu/i.test(message.text)){
+      todoList = await todos.getAll()
+      messages = await genarateFlex(todoList)
+    }
+    
+    return client.replyMessage(reply_token, messages)
 
 
   }
