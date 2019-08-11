@@ -14,6 +14,7 @@ export default {
       return await db.collection('todos').add(todo)
     },
     update: async (id, status) => {
+      console.log(id, status)
       return await db.collection('todos').doc(id).update({status})
     }
 }
