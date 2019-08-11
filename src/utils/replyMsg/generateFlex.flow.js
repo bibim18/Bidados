@@ -1,5 +1,10 @@
 import { status } from '../../configs/status'
 
+const nextStatus = {
+  TODO: 'DONE',
+  DONE: 'FAIL',
+  FAIL: 'TODO'
+}
 export const flexMsg = (story, list) => {
   const contents = list.map((item, index) => {
     return {
@@ -8,9 +13,8 @@ export const flexMsg = (story, list) => {
       flex: 5,
       action: {
         type: 'postback',
-        label: 'change status',
-        text: 'done',
-        data: 'status=DONE'
+        label: 'changestatus',
+        data: `status=${nextStatus[item.status]}&id=${item.id}`
       },
       contents: [
         {
