@@ -1,9 +1,22 @@
+import {status} from '../configs/status'
+
 export const flexMsg = (story, list) => {
   const contents = list.map((item, index) => {
     return {
-      type: 'text',
-      text: `${index+1}. ${item.title}`,
-      align: 'start'
+      type: 'box',
+      layout: 'baseline',
+      flex: 5,
+      contents: [
+        {
+          type: 'text',
+          text: `${index + 1}. ${item.title}`,
+          align: 'start'
+        },
+        {
+          type: 'icon',
+          url: status[item.status]
+        }
+      ]
     }
   })
   const msg = {
@@ -18,7 +31,7 @@ export const flexMsg = (story, list) => {
         contents: [
           {
             type: 'text',
-            text: `List of ${story.charAt(0).toUpperCase() + story.slice(1)}`,
+            text: 'List of Memory',
             flex: 2,
             size: 'lg',
             align: 'center',
@@ -30,6 +43,7 @@ export const flexMsg = (story, list) => {
       body: {
         type: 'box',
         layout: 'vertical',
+        flex: 0,
         contents
       }
     }

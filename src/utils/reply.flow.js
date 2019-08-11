@@ -4,7 +4,6 @@ import todos from '../model/todos'
 import { genarateMenu } from './genarateMenu.flow'
 import { flexMsg } from './generateFlex.flow'
 import R from 'ramda'
-import { CLIENT_RENEG_LIMIT } from 'tls';
 
 const client = new Client({
   channelAccessToken: `${config.line.line_access}`
@@ -33,6 +32,7 @@ const reply = async (reply_token, message) => {
 
       data = {
         title: text,
+        status: 'TODO',
         story
       }
     }
