@@ -4,6 +4,7 @@ import todos from '../model/todos'
 import { genarateMenu } from './genarateMenu.flow'
 import { flexMsg } from './generateFlex.flow'
 import R from 'ramda'
+import { CLIENT_RENEG_LIMIT } from 'tls';
 
 const client = new Client({
   channelAccessToken: `${config.line.line_access}`
@@ -12,12 +13,12 @@ const client = new Client({
 const replaceWord = /add|แอด|เพิ่ม/i
 
 const reply = async (reply_token, message) => {
-  let text
+  let text = message.text
   let story
   let todoList
   // keep text into list
   if (message.text.match(/add|แอด|เพิ่ม/i)) {
-    text = message.text.replace(replaceWord, '').trim()
+    text = text.replace(replaceWord, '').trim()
     let data = {
       title: text
     }
@@ -39,28 +40,32 @@ const reply = async (reply_token, message) => {
     return client.replyMessage(reply_token, [
       {
         type: 'text',
-        text: `Add ${text} in story ${story}`
+        text: `Added ${text} in story ${story}`
       }
     ])
   } else {
-    // show list
-    if (/memory/i.test(message.text)) todoList = await todos.getAll('memory')
-    if (/travel/i.test(message.text)) todoList = await todos.getAll('travel')
-    if (/list/i.test(message.text)) todoList = await todos.getAll()
-
     let messages
-    if (todoList) {
-      messages = flexMsg(message.text, todoList)
-      if (R.isEmpty(todoList)) {
-        messages = [
-          {
-            type: 'text',
-            text: `Not found list`
-          }
-        ]
+    // show list
+    if (text.match(/list /)) {
+      text = text
+        .slice(text.match(/list /).index + 4)
+        .trim()
+        .toLowerCase()
+      todoList = await todos.getAll(text)
+      if (/all/i.test(message.text)) todoList = await todos.getAll()
+
+      if (todoList) {
+        messages = flexMsg(message.text, todoList)
+        if (R.isEmpty(todoList)) {
+          messages = [
+            {
+              type: 'text',
+              text: `Not found list`
+            }
+          ]
+        }
       }
     }
-
     if (/menu/i.test(message.text)) {
       const list = await todos.getAll()
       messages = await genarateMenu(list)

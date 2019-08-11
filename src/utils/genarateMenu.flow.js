@@ -5,7 +5,7 @@ export const genarateMenu = async stories => {
       return {
         type: 'message',
         label: `List of ${item.story.charAt(0).toUpperCase() + item.story.slice(1)}`,
-        text: item.story
+        text: `list ${item.story}`
       }
     })
 
