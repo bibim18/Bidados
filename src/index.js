@@ -27,6 +27,7 @@ router.post('/webhook', async (ctx, next) => {
     let reply_token = ctx.request.body.events[0].replyToken
     let resp = {}
     const postback = ctx.request.body.events[0].postback
+    console.log(postback)
     const message = ctx.request.body.events[0].message
     if(message) resp = await reply(reply_token, message)
     if(postback) resp = await updateStatus(reply_token, postback.data)
