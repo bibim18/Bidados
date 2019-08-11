@@ -2,7 +2,7 @@ import { Client } from '@line/bot-sdk'
 import config from '../configs'
 import todos from '../model/todos'
 import { genarateMenu, flexMsg } from './replyMsg'
-import createDataToList from './flow'
+import { createData } from './flow'
 import R from 'ramda'
 
 const client = new Client({
@@ -18,7 +18,7 @@ const reply = async (reply_token, message) => {
   // keep text into list
   if (message.text.match(/add|แอด|เพิ่ม/i)) {
     text = text.replace(replaceWord, '').trim()
-    story = await createDataToList(text)
+    story = await createData(text)
     return client.replyMessage(reply_token, [
       {
         type: 'text',

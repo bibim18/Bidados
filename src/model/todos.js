@@ -10,7 +10,10 @@ export default {
         });
         return dataList
     },
-    create: async (todo) => {
+    create: async todo => {
       return await db.collection('todos').add(todo)
+    },
+    update: async (id, status) => {
+      return await db.collection('todos').doc(id).update({status})
     }
 }
