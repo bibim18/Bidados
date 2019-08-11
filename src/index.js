@@ -25,6 +25,7 @@ router.get('/test', async (ctx,next)=> {
 })
 
 router.post('/webhook', async (ctx, next) => {
+  console.log(ctx)
     let reply_token = ctx.request.body.events[0].replyToken
     const message = ctx.request.body.events[0].message
     const resp = await reply(reply_token, message)

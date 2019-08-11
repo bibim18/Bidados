@@ -1,8 +1,8 @@
 import { Client } from '@line/bot-sdk'
 import config from '../configs'
 import todos from '../model/todos'
-import { genarateMenu } from './genarateMenu.flow'
-import { flexMsg } from './generateFlex.flow'
+import { genarateMenu, flexMsg } from './replyMsg'
+import createDataToList from './flow'
 import R from 'ramda'
 
 const client = new Client({
@@ -18,25 +18,7 @@ const reply = async (reply_token, message) => {
   // keep text into list
   if (message.text.match(/add|แอด|เพิ่ม/i)) {
     text = text.replace(replaceWord, '').trim()
-    let data = {
-      title: text
-    }
-    const regex = /to|ใน\s+/i
-    if (text.match(regex)) {
-      // get new title and story
-      story = text
-        .slice(text.match(regex).index + 2)
-        .trim()
-        .toLowerCase()
-      text = text.slice(0, text.match(regex).index - 1).trim()
-
-      data = {
-        title: text,
-        status: 'TODO',
-        story
-      }
-    }
-    await todos.create(data)
+    story = await createDataToList(text)
     return client.replyMessage(reply_token, [
       {
         type: 'text',

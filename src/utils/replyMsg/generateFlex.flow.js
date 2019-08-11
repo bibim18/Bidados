@@ -1,4 +1,4 @@
-import {status} from '../configs/status'
+import { status } from '../../configs/status'
 
 export const flexMsg = (story, list) => {
   const contents = list.map((item, index) => {
@@ -6,6 +6,12 @@ export const flexMsg = (story, list) => {
       type: 'box',
       layout: 'baseline',
       flex: 5,
+      action: {
+        type: 'postback',
+        label: 'change status',
+        text: 'done',
+        data: 'status=DONE'
+      },
       contents: [
         {
           type: 'text',
