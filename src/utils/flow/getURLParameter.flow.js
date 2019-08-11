@@ -9,5 +9,6 @@ export const getURLParameters = (data) => {
             let sParameterName = sURLVariables[i].split('=');      
             result[sParameterName[0]] = sParameterName[1];
         }
+        console.log(result)
         return result;
 }
