@@ -8,8 +8,8 @@ const client = new Client({
 })
 
 export const updateStatus = async (reply_token, data) => {
-    console.log('in updateStatus ', reply_token,data)
   const { id, status } = getURLParameters(data)
+  console.log('in updateStatus ', id, status)
   await todos.update(id, status)
   return client.replyMessage(reply_token, [
     {
