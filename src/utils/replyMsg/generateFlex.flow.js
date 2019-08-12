@@ -14,7 +14,7 @@ export const flexMsg = (story, list) => {
       action: {
         type: 'postback',
         label: 'changestatus',
-        data: `status=${nextStatus[item.status]}&id=${item.id}`
+        data: `?status=${nextStatus[item.status]}&id=${item.id}&title=${item.title}`
       },
       contents: [
         {
