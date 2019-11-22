@@ -11,7 +11,8 @@ const client = new Client({
 
 const replaceWord = /add|แอด|เพิ่ม/i
 
-const reply = async (reply_token, message) => {
+export default async (reply_token, message) => {
+  // return 3
   let text = message.text
   let story
   let todoList
@@ -56,5 +57,3 @@ const reply = async (reply_token, message) => {
     if (messages) return client.replyMessage(reply_token, messages)
   }
 }
-
-export default reply

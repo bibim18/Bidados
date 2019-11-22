@@ -7,20 +7,22 @@
     "start": "npm run build && node build/index.js",
     "dev": "nodemon src/index.js --exec babel-node -e js",
     "build": "npm run clean && babel src --out-dir build",
-    "clean": "rm -rf build && mkdir build"
+    "clean": "rm -rf build && mkdir build",
+    "test": "jest test"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
+    "@babel/core": "^7.7.2",
     "@babel/node": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-env": "^7.7.1",
     "@babel/runtime": "^7.5.5",
     "@koa/cors": "^3.0.0",
     "@line/bot-sdk": "^6.8.1",
     "axios": "^0.19.0",
+    "babel-jest": "^24.9.0",
     "dotenv": "^8.0.0",
     "firebase": "^6.3.3",
     "firebase-admin": "^8.3.0",
@@ -30,5 +32,9 @@
     "koa-router": "^7.4.0",
     "nodemon": "^1.19.1",
     "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0"
   }
 }
