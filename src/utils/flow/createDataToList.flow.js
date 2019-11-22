@@ -6,7 +6,7 @@ export const createData = async(text) => {
     let data = {
         title: text
       }
-      const regex = /to|ใน\s+/i
+      const regex = /\s(ใน|to)\s/i
       if (text.match(regex)) {
         // get new title and story
         story = text
